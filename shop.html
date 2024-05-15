@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Shirt Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>T-Shirt Shop</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="cart" id="cart-icon">
+                <span class="cart-count">0</span>
+                <img src="./img/cart.png" alt="Cart Icon">
+            </div>
+        </div>
+    </header>      
+
+    <section class="shop">
+        <div class="container">
+            <h2>Shop</h2>
+            <div class="products">
+                <div class="product">
+                    <img src="./img/black.jpg" alt="T-Shirt 1">
+                    <h3>T-Shirt 1</h3>
+                    <p>₱299</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="./img/Men Solid Tee.jpg" alt="T-Shirt 2">
+                    <h3>T-Shirt 2</h3>
+                    <p>₱399</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="./img/white.jpg" alt="T-Shirt 3">
+                    <h3>T-Shirt 3</h3>
+                    <p>₱299</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('cart-icon').addEventListener('click', function() {
+            window.location.href = 'checkout.html';
+        });
+    
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        const cartCountElement = document.querySelector('.cart-count');
+    
+        let cartCount = 0;
+        let cartItems = [];
+    
+        addToCartButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                cartCount++;
+                cartCountElement.textContent = cartCount;
+    
+                const product = {
+                    name: button.parentElement.querySelector('h3').textContent,
+                    price: button.parentElement.querySelector('p').textContent
+                };
+    
+                cartItems.push(product);
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            });
+        });
+    </script>
+    
+    <script src="cart.js"></script>
+</body>
+</html>

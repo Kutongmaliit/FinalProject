@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Checkout</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="checkout">
+        <div class="container">
+            <h2>Your Cart</h2>
+            <div class="cart-items">
+                <!-- Cart items will be injected here by JavaScript -->
+            </div>
+            <div class="total-price">
+                <h3>Total: <span id="total-price">₱0</span></h3>
+            </div>
+
+            <h3>Enter Payment Amount</h3>
+            <input type="number" id="payment-amount" placeholder="Enter amount">
+            <button id="checkout-button">Checkout</button>
+
+            <div id="message" class="message"></div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartItemsContainer = document.querySelector('.cart-items');
+            const totalPriceElement = document.getElementById('total-price');
+            const checkoutButton = document.getElementById('checkout-button');
+            const paymentAmountInput = document.getElementById('payment-amount');
+            const messageElement = document.getElementById('message');
+
+            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+            let totalPrice = 0;
+
+            cartItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>${item.price}</p>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+
+                const price = parseFloat(item.price.replace('₱', ''));
+                totalPrice += price;
+            });
+
+            totalPriceElement.textContent = `₱${totalPrice}`;
+
+            checkoutButton.addEventListener('click', () => {
+                const paymentAmount = parseFloat(paymentAmountInput.value);
+                if (isNaN(paymentAmount) || paymentAmount < totalPrice) {
+                    messageElement.textContent = 'Purchase Failed';
+                    messageElement.style.color = 'red';
+                } else {
+                    const change = paymentAmount - totalPrice;
+                    messageElement.innerHTML = `Purchase Success!<br>Change: ₱${change.toFixed(2)}`;
+                    messageElement.style.color = 'green';
+                    localStorage.removeItem('cartItems');  // Clear the cart after successful purchase
+                }
+            });
+        });
+    </script>
+</body>
+</html>
